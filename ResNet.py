@@ -90,7 +90,6 @@ class ResNet(object):
 
 
         """ Training """
-
         self.optim = tf.train.MomentumOptimizer(self.lr, momentum=0.9).minimize(self.train_loss)
 
         """" Summary """
