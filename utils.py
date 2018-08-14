@@ -94,7 +94,10 @@ def _random_flip_leftright(batch):
             batch[i] = np.fliplr(batch[i])
     return batch
 
-def data_augmentation(batch, img_size):
-    batch = _random_flip_leftright(batch)
-    batch = _random_crop(batch, [img_size, img_size], 4)
+def data_augmentation(batch, img_size, dataset_name):
+    if dataset_name == 'mnist' :
+        batch = _random_crop(batch, [img_size, img_size], 4)
+    else :
+        batch = _random_flip_leftright(batch)
+        batch = _random_crop(batch, [img_size, img_size], 4)
     return batch

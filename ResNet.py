@@ -147,7 +147,7 @@ class ResNet(object):
                 batch_x = self.train_x[idx*self.batch_size:(idx+1)*self.batch_size]
                 batch_y = self.train_y[idx*self.batch_size:(idx+1)*self.batch_size]
 
-                batch_x = data_augmentation(batch_x, self.img_size)
+                batch_x = data_augmentation(batch_x, self.img_size, self.dataset_name)
 
                 train_feed_dict = {
                     self.train_inptus : batch_x,
