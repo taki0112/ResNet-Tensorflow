@@ -1,5 +1,5 @@
 # ResNet-Tensorflow
-Simple Tensorflow implementation of ResNet
+Simple Tensorflow implementation of ResNet32, ResNet56, ResNet110
 
 ## Summary
 ### Train
