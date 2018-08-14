@@ -6,7 +6,7 @@ from utils import *
 def parse_args():
     desc = "Tensorflow implementation of ResNet"
     parser = argparse.ArgumentParser(description=desc)
-    parser.add_argument('--phase', type=str, default='test', help='train or test ?')
+    parser.add_argument('--phase', type=str, default='train', help='train or test ?')
     parser.add_argument('--dataset', type=str, default='cifar10', help='[cifar10, mnist, fashion-mnist')
 
 
