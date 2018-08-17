@@ -195,7 +195,6 @@ class ResNet(object):
 
     @property
     def model_dir(self):
-        # 32 layers: n=5, 56 layers: n=9, 110 layers: n=18
         res_num = 0
         if self.res_n == 4 :
             res_num = 18
