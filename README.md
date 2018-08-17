@@ -1,5 +1,5 @@
 # ResNet-Tensorflow
-Simple Tensorflow implementation of pre-activation ResNet18, ResNet32, ResNet56, ResNet110
+Simple Tensorflow implementation of ***pre-activation*** ResNet18, ResNet32, ResNet56, ResNet110
 
 ## Summary
 ### dataset
