@@ -36,7 +36,7 @@ class ResNet(object):
         self.checkpoint_dir = args.checkpoint_dir
         self.log_dir = args.log_dir
 
-        self.res_n = args.res_n # 32 layers: n=5, 56 layers: n=9, 110 layers: n=18
+        self.res_n = args.res_n # 18 layer: n=4, 32 layers: n=5, 56 layers: n=9, 110 layers: n=18
 
         self.epoch = args.epoch
         self.batch_size = args.batch_size
