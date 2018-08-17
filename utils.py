@@ -189,6 +189,10 @@ def data_augmentation(batch, img_size, dataset_name):
     if dataset_name == 'mnist' :
         batch = _random_crop(batch, [img_size, img_size], 4)
 
+    elif dataset_name =='tiny' :
+        batch = _random_flip_leftright(batch)
+        batch = _random_crop(batch, [img_size, img_size], 8)
+
     else :
         batch = _random_flip_leftright(batch)
         batch = _random_crop(batch, [img_size, img_size], 4)
