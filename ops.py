@@ -10,6 +10,7 @@ import tensorflow.contrib as tf_contrib
 weight_init = tf_contrib.layers.variance_scaling_initializer()
 weight_regularizer = tf_contrib.layers.l2_regularizer(0.0001)
 
+
 ##################################################################################
 # Layer
 ##################################################################################
@@ -93,7 +94,7 @@ def batch_norm(x, is_training=True, scope='batch_norm'):
 ##################################################################################
 
 def classification_loss(logit, label) :
-    loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=label, logits=logit))
+    loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(labels=label, logits=logit))
     prediction = tf.equal(tf.argmax(logit, -1), tf.argmax(label, -1))
     accuracy = tf.reduce_mean(tf.cast(prediction, tf.float32))
 

@@ -26,6 +26,13 @@ class ResNet(object):
             self.c_dim = 1
             self.label_dim = 10
 
+        if self.dataset_name == 'tiny' :
+            self.train_x, self.train_y, self.test_x, self.test_y = load_tiny()
+            self.img_size = 64
+            self.c_dim = 3
+            self.label_dim = 200
+
+
         self.checkpoint_dir = args.checkpoint_dir
         self.log_dir = args.log_dir
 
@@ -173,7 +180,7 @@ class ResNet(object):
 
                 # display training status
                 counter += 1
-                print("Epoch: [%2d] [%5d/%5d] time: %4.4f, train_accuracy: %.2f, test_accuracy: %.2f, learning_rate : %.3f" \
+                print("Epoch: [%2d] [%5d/%5d] time: %4.4f, train_accuracy: %.2f, test_accuracy: %.2f, learning_rate : %.4f" \
                       % (epoch, idx, self.iteration, time.time() - start_time, train_accuracy, test_accuracy, epoch_lr))
 
             # After an epoch, start_batch_id is set to zero
@@ -190,6 +197,8 @@ class ResNet(object):
     def model_dir(self):
         # 32 layers: n=5, 56 layers: n=9, 110 layers: n=18
         res_num = 0
+        if self.res_n == 4 :
+            res_num = 18
         if self.res_n == 5 :
             res_num = 32
         if self.res_n == 9 :

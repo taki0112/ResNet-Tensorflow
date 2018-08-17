@@ -7,12 +7,12 @@ def parse_args():
     desc = "Tensorflow implementation of ResNet"
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument('--phase', type=str, default='train', help='train or test ?')
-    parser.add_argument('--dataset', type=str, default='cifar10', help='[cifar10, mnist, fashion-mnist')
+    parser.add_argument('--dataset', type=str, default='tiny', help='[cifar10, mnist, fashion-mnist, tiny')
 
 
-    parser.add_argument('--epoch', type=int, default=164, help='The number of epochs to run')
-    parser.add_argument('--batch_size', type=int, default=128, help='The size of batch per gpu')
-    parser.add_argument('--res_n', type=int, default=5, help='32 layers: n=5, 56 layers: n=9, 110 layers: n=18')
+    parser.add_argument('--epoch', type=int, default=82, help='The number of epochs to run')
+    parser.add_argument('--batch_size', type=int, default=256, help='The size of batch per gpu')
+    parser.add_argument('--res_n', type=int, default=4, help='18 layer: n=4, 32 layers: n=5, 56 layers: n=9, 110 layers: n=18')
 
     parser.add_argument('--lr', type=float, default=0.1, help='learning rate')
 
