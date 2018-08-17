@@ -40,9 +40,7 @@ def resblock(x_init, channels, is_training=True, use_bias=True, downsample=False
 
         if downsample :
             x = conv(x, channels, kernel=3, stride=2, use_bias=use_bias, scope='conv_0')
-
-            x_init = avg_pooling(x_init)
-            x_init = conv(x_init, channels, kernel=1, stride=1, use_bias=use_bias, scope='conv_init')
+            x_init = conv(x_init, channels, kernel=1, stride=2, use_bias=use_bias, scope='conv_init')
 
         else :
             x = conv(x, channels, kernel=3, stride=1, use_bias=use_bias, scope='conv_0')
@@ -65,9 +63,7 @@ def bottle_resblock(x_init, channels, is_training=True, use_bias=True, downsampl
         x = relu(x)
         if downsample :
             x = conv(x, channels, kernel=3, stride=2, use_bias=use_bias, scope='conv_0')
-
-            x_init = avg_pooling(x_init)
-            x_init = conv(x_init, channels*4, kernel=1, stride=1, use_bias=use_bias, scope='conv_init')
+            x_init = conv(x_init, channels*4, kernel=1, stride=2, use_bias=use_bias, scope='conv_init')
 
         else :
             x = conv(x, channels, kernel=3, stride=1, use_bias=use_bias, scope='conv_0')
