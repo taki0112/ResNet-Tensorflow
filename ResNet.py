@@ -51,20 +51,43 @@ class ResNet(object):
 
     def network(self, x, is_training=True, reuse=False):
         with tf.variable_scope("network", reuse=reuse):
-            x = conv(x, channels=16, kernel=3, stride=1, scope='conv')
 
-            for i in range(self.res_n) :
-                x = resblock(x, channels=16, is_training=is_training, downsample=False, scope='resblock0_' + str(i))
+            if self.res_n < 50 :
+                residual_block = resblock
+            else :
+                residual_block = bottle_resblock
 
-            x = resblock(x, channels=32, is_training=is_training, downsample=True, scope='resblock1_0')
+            residual_list = get_residual_layer(self.res_n)
 
-            for i in range(1, self.res_n) :
-                x = resblock(x, channels=32, is_training=is_training, downsample=False, scope='resblock1_' + str(i))
+            ch = 32
+            x = conv(x, channels=ch, kernel=3, stride=1, scope='conv')
 
-            x = resblock(x, channels=64, is_training=is_training, downsample=True, scope='resblock2_0')
+            for i in range(residual_list[0]) :
+                x = residual_block(x, channels=ch, is_training=is_training, downsample=False, scope='resblock0_' + str(i))
 
-            for i in range(1, self.res_n) :
-                x = resblock(x, channels=64, is_training=is_training, downsample=False, scope='resblock2_' + str(i))
+            ########################################################################################################
+
+            x = residual_block(x, channels=ch*2, is_training=is_training, downsample=True, scope='resblock1_0')
+
+            for i in range(1, residual_list[1]) :
+                x = residual_block(x, channels=ch*2, is_training=is_training, downsample=False, scope='resblock1_' + str(i))
+
+            ########################################################################################################
+
+            x = residual_block(x, channels=ch*4, is_training=is_training, downsample=True, scope='resblock2_0')
+
+            for i in range(1, residual_list[2]) :
+                x = residual_block(x, channels=ch*4, is_training=is_training, downsample=False, scope='resblock2_' + str(i))
+
+            ########################################################################################################
+
+            x = residual_block(x, channels=ch*8, is_training=is_training, downsample=True, scope='resblock_3_0')
+
+            for i in range(1, residual_list[3]) :
+                x = residual_block(x, channels=ch*8, is_training=is_training, downsample=False, scope='resblock_3_' + str(i))
+
+            ########################################################################################################
+
 
             x = batch_norm(x, is_training, scope='batch_norm')
             x = relu(x)
@@ -195,17 +218,7 @@ class ResNet(object):
 
     @property
     def model_dir(self):
-        res_num = 0
-        if self.res_n == 4 :
-            res_num = 18
-        if self.res_n == 5 :
-            res_num = 32
-        if self.res_n == 9 :
-            res_num = 56
-        if self.res_n == 18 :
-            res_num = 110
-
-        return "{}{}_{}_{}_{}".format(self.model_name, res_num, self.dataset_name, self.batch_size, self.init_lr)
+        return "{}{}_{}_{}_{}".format(self.model_name, self.res_n, self.dataset_name, self.batch_size, self.init_lr)
 
     def save(self, checkpoint_dir, step):
         checkpoint_dir = os.path.join(checkpoint_dir, self.model_dir)

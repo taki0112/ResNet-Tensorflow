@@ -76,8 +76,8 @@ def load_tiny() :
 
     print('Loading ' + str(num_classes) + ' classes')
 
-    X_train = np.zeros([num_classes * 500, 3, 64, 64], dtype='uint8')
-    y_train = np.zeros([num_classes * 500], dtype='uint8')
+    X_train = np.zeros([num_classes * 500, 3, 64, 64], dtype=np.float32)
+    y_train = np.zeros([num_classes * 500], dtype=np.float32)
 
     trainPath = path + '/train'
 
@@ -105,8 +105,8 @@ def load_tiny() :
 
     val_annotations_map = get_annotations_map()
 
-    X_test = np.zeros([num_classes * 50, 3, 64, 64], dtype='uint8')
-    y_test = np.zeros([num_classes * 50], dtype='uint8')
+    X_test = np.zeros([num_classes * 50, 3, 64, 64], dtype=np.float32)
+    y_test = np.zeros([num_classes * 50], dtype=np.float32)
 
     print('loading test images...')
 
@@ -127,8 +127,8 @@ def load_tiny() :
 
     print('finished loading test images : ' + str(i))
 
-    X_train = X_train.astype('float32')
-    X_test = X_test.astype('float32')
+    X_train = X_train.astype(np.float32)
+    X_test = X_test.astype(np.float32)
     X_train /= 255.0
     X_test /= 255.0
 

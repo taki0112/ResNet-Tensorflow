@@ -40,9 +40,7 @@ def resblock(x_init, channels, is_training=True, use_bias=True, downsample=False
 
         if downsample :
             x = conv(x, channels, kernel=3, stride=2, use_bias=use_bias, scope='conv_0')
-
-            x_init = avg_pooling(x_init)
-            x_init = tf.pad(x_init, [[0, 0], [0, 0], [0, 0], [channels//4, channels//4]])
+            x_init = conv(x_init, channels, kernel=1, stride=2, use_bias=use_bias, scope='conv_init')
 
         else :
             x = conv(x, channels, kernel=3, stride=1, use_bias=use_bias, scope='conv_0')
@@ -54,6 +52,50 @@ def resblock(x_init, channels, is_training=True, use_bias=True, downsample=False
 
 
         return x + x_init
+
+def bottle_resblock(x_init, channels, is_training=True, use_bias=True, downsample=False, scope='bottle_resblock') :
+    with tf.variable_scope(scope) :
+        x = batch_norm(x_init, is_training, scope='batch_norm_1x1_front')
+        x = relu(x)
+        x = conv(x, channels, kernel=1, stride=1, use_bias=use_bias, scope='conv_1x1_front')
+
+        x = batch_norm(x, is_training, scope='batch_norm_3x3')
+        x = relu(x)
+        if downsample :
+            x = conv(x, channels, kernel=3, stride=2, use_bias=use_bias, scope='conv_0')
+            x_init = conv(x_init, channels*4, kernel=1, stride=2, use_bias=use_bias, scope='conv_init')
+
+        else :
+            x = conv(x, channels, kernel=3, stride=1, use_bias=use_bias, scope='conv_0')
+
+        x = batch_norm(x, is_training, scope='batch_norm_1x1_back')
+        x = relu(x)
+        x = conv(x, channels*4, kernel=1, stride=1, use_bias=use_bias, scope='conv_1x1_back')
+
+        return x + x_init
+
+
+
+def get_residual_layer(res_n) :
+    x = []
+
+    if res_n == 18 :
+        x = [2, 2, 2, 2]
+
+    if res_n == 34 :
+        x = [3, 4, 6, 3]
+
+    if res_n == 50 :
+        x = [3, 4, 6, 3]
+
+    if res_n == 101 :
+        x = [3, 4, 23, 3]
+
+    if res_n == 152 :
+        x = [3, 8, 36, 3]
+
+    return x
+
 
 
 ##################################################################################
