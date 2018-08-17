@@ -11,7 +11,7 @@ def parse_args():
 
 
     parser.add_argument('--epoch', type=int, default=82, help='The number of epochs to run')
-    parser.add_argument('--batch_size', type=int, default=1, help='The size of batch per gpu')
+    parser.add_argument('--batch_size', type=int, default=256, help='The size of batch per gpu')
     parser.add_argument('--res_n', type=int, default=18, help='18, 34, 50, 101, 152')
 
     parser.add_argument('--lr', type=float, default=0.1, help='learning rate')
