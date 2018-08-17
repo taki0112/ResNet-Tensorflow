@@ -1,10 +1,10 @@
 # ResNet-Tensorflow
-Simple Tensorflow implementation of ResNet18, ResNet32, ResNet56, ResNet110
+Simple Tensorflow implementation of pre-activation ResNet18, ResNet32, ResNet56, ResNet110
 
 ## Summary
 ### dataset
 * [tiny_imagenet](https://tiny-imagenet.herokuapp.com/)
-* cifar10, mnist, fashion-mnist in `keras`
+* cifar10, mnist, fashion-mnist in `keras` (`pip install keras`)
 
 ### Train
 * python main.py --phase train --dataset tiny --ren_n 4 --lr 0.1
