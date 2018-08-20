@@ -5,7 +5,7 @@ from keras.datasets import cifar10, cifar100, mnist, fashion_mnist
 from keras.utils import to_categorical
 import numpy as np
 import random
-from PIL import Image
+from scipy import misc
 
 def check_folder(log_dir):
     if not os.path.exists(log_dir):
@@ -21,8 +21,10 @@ def str2bool(x):
 
 def load_cifar10() :
     (train_data, train_labels), (test_data, test_labels) = cifar10.load_data()
-    train_data = train_data / 255.0
-    test_data = test_data / 255.0
+    # train_data = train_data / 255.0
+    # test_data = test_data / 255.0
+
+    train_data, test_data = normalize(train_data, test_data)
 
     train_labels = to_categorical(train_labels, 10)
     test_labels = to_categorical(test_labels, 10)
@@ -38,8 +40,9 @@ def load_cifar10() :
 
 def load_cifar100() :
     (train_data, train_labels), (test_data, test_labels) = cifar100.load_data()
-    train_data = train_data / 255.0
-    test_data = test_data / 255.0
+    # train_data = train_data / 255.0
+    # test_data = test_data / 255.0
+    train_data, test_data = normalize(train_data, test_data)
 
     train_labels = to_categorical(train_labels, 100)
     test_labels = to_categorical(test_labels, 100)
@@ -55,8 +58,10 @@ def load_cifar100() :
 
 def load_mnist() :
     (train_data, train_labels), (test_data, test_labels) = mnist.load_data()
-    train_data = np.expand_dims(train_data, axis=-1) / 255.0
-    test_data = np.expand_dims(test_data, axis=-1) / 255.0
+    train_data = np.expand_dims(train_data, axis=-1)
+    test_data = np.expand_dims(test_data, axis=-1)
+
+    train_data, test_data = normalize(train_data, test_data)
 
     train_labels = to_categorical(train_labels, 10)
     test_labels = to_categorical(test_labels, 10)
@@ -72,8 +77,10 @@ def load_mnist() :
 
 def load_fashion() :
     (train_data, train_labels), (test_data, test_labels) = fashion_mnist.load_data()
-    train_data = np.expand_dims(train_data, axis=-1) / 255.0
-    test_data = np.expand_dims(test_data, axis=-1) / 255.0
+    train_data = np.expand_dims(train_data, axis=-1)
+    test_data = np.expand_dims(test_data, axis=-1)
+
+    train_data, test_data = normalize(train_data, test_data)
 
     train_labels = to_categorical(train_labels, 10)
     test_labels = to_categorical(test_labels, 10)
@@ -88,6 +95,7 @@ def load_fashion() :
     return train_data, train_labels, test_data, test_labels
 
 def load_tiny() :
+    IMAGENET_MEAN = [123.68, 116.78, 103.94]
     path = './tiny-imagenet-200'
     num_classes = 200
 
@@ -107,7 +115,7 @@ def load_tiny() :
         sChildPath = os.path.join(os.path.join(trainPath, sChild), 'images')
         annotations[sChild] = j
         for c in os.listdir(sChildPath):
-            X = np.array(Image.open(os.path.join(sChildPath, c)))
+            X = misc.imread(os.path.join(sChildPath, c), mode='RGB')
             if len(np.shape(X)) == 2:
                 X_train[i] = np.array([X, X, X])
             else:
@@ -132,7 +140,7 @@ def load_tiny() :
     for sChild in os.listdir(testPath):
         if val_annotations_map[sChild] in annotations.keys():
             sChildPath = os.path.join(testPath, sChild)
-            X = np.array(Image.open(sChildPath))
+            X = misc.imread(sChildPath, mode='RGB')
             if len(np.shape(X)) == 2:
                 X_test[i] = np.array([X, X, X])
             else:
@@ -146,8 +154,14 @@ def load_tiny() :
 
     X_train = X_train.astype(np.float32)
     X_test = X_test.astype(np.float32)
-    X_train /= 255.0
-    X_test /= 255.0
+    # X_train /= 255.0
+    # X_test /= 255.0
+
+    # for i in range(3) :
+    #     X_train[:, :, :, i] =  X_train[:, :, :, i] - IMAGENET_MEAN[i]
+    #     X_test[:, :, :, i] = X_test[:, :, :, i] - IMAGENET_MEAN[i]
+
+    X_train, X_test = normalize(X_train, X_test)
 
 
     # convert class vectors to binary class matrices
@@ -164,6 +178,16 @@ def load_tiny() :
     np.random.shuffle(y_train)
 
     return X_train, y_train, X_test, y_test
+
+def normalize(X_train, X_test):
+
+    mean = np.mean(X_train, axis=(0, 1, 2, 3))
+    std = np.std(X_train, axis=(0, 1, 2, 3))
+
+    X_train = (X_train - mean) / std
+    X_test = (X_test - mean) / std
+
+    return X_train, X_test
 
 def get_annotations_map():
     valAnnotationsPath = './tiny-imagenet-200/val/val_annotations.txt'
