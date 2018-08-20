@@ -14,6 +14,12 @@ class ResNet(object):
             self.c_dim = 3
             self.label_dim = 10
 
+        if self.dataset_name == 'cifar100' :
+            self.train_x, self.train_y, self.test_x, self.test_y = load_cifar100()
+            self.img_size = 32
+            self.c_dim = 3
+            self.label_dim = 100
+
         if self.dataset_name == 'mnist' :
             self.train_x, self.train_y, self.test_x, self.test_y = load_mnist()
             self.img_size = 28

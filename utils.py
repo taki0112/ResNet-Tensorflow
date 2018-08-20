@@ -1,7 +1,7 @@
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
 import os
-from keras.datasets import cifar10, mnist, fashion_mnist
+from keras.datasets import cifar10, cifar100, mnist, fashion_mnist
 from keras.utils import to_categorical
 import numpy as np
 import random
@@ -26,6 +26,23 @@ def load_cifar10() :
 
     train_labels = to_categorical(train_labels, 10)
     test_labels = to_categorical(test_labels, 10)
+
+    seed = 777
+    np.random.seed(seed)
+    np.random.shuffle(train_data)
+    np.random.seed(seed)
+    np.random.shuffle(train_labels)
+
+
+    return train_data, train_labels, test_data, test_labels
+
+def load_cifar100() :
+    (train_data, train_labels), (test_data, test_labels) = cifar100.load_data()
+    train_data = train_data / 255.0
+    test_data = test_data / 255.0
+
+    train_labels = to_categorical(train_labels, 100)
+    test_labels = to_categorical(test_labels, 100)
 
     seed = 777
     np.random.seed(seed)
