@@ -3,7 +3,7 @@ Simple Tensorflow implementation of ***pre-activation*** ResNet18, ResNet34, Res
 ## Summary
 ### dataset
 * [tiny_imagenet](https://tiny-imagenet.herokuapp.com/)
-* cifar10, mnist, fashion-mnist in `keras` (`pip install keras`)
+* cifar10, cifar100, mnist, fashion-mnist in `keras` (`pip install keras`)
 
 ### Train
 * python main.py --phase train --dataset tiny --res_n 18 --lr 0.1
