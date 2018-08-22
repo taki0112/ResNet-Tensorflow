@@ -65,7 +65,7 @@ class ResNet(object):
 
             residual_list = get_residual_layer(self.res_n)
 
-            ch = 32 # 
+            ch = 32 # paper is 64
             x = conv(x, channels=ch, kernel=3, stride=1, scope='conv')
 
             for i in range(residual_list[0]) :
