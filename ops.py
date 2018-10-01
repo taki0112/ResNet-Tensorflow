@@ -56,23 +56,25 @@ def resblock(x_init, channels, is_training=True, use_bias=True, downsample=False
 def bottle_resblock(x_init, channels, is_training=True, use_bias=True, downsample=False, scope='bottle_resblock') :
     with tf.variable_scope(scope) :
         x = batch_norm(x_init, is_training, scope='batch_norm_1x1_front')
-        x = relu(x)
-        x = conv(x, channels, kernel=1, stride=1, use_bias=use_bias, scope='conv_1x1_front')
+        shortcut = relu(x)
 
+        x = conv(shortcut, channels, kernel=1, stride=1, use_bias=use_bias, scope='conv_1x1_front')
         x = batch_norm(x, is_training, scope='batch_norm_3x3')
         x = relu(x)
+
         if downsample :
             x = conv(x, channels, kernel=3, stride=2, use_bias=use_bias, scope='conv_0')
-            x_init = conv(x_init, channels*4, kernel=1, stride=2, use_bias=use_bias, scope='conv_init')
+            shortcut = conv(shortcut, channels*4, kernel=1, stride=2, use_bias=use_bias, scope='conv_init')
 
         else :
             x = conv(x, channels, kernel=3, stride=1, use_bias=use_bias, scope='conv_0')
+            shortcut = conv(shortcut, channels * 4, kernel=1, stride=1, use_bias=use_bias, scope='conv_init')
 
         x = batch_norm(x, is_training, scope='batch_norm_1x1_back')
         x = relu(x)
         x = conv(x, channels*4, kernel=1, stride=1, use_bias=use_bias, scope='conv_1x1_back')
 
-        return x + x_init
+        return x + shortcut
 
 
 
