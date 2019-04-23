@@ -123,6 +123,10 @@ class ResNet(object):
 
         self.train_loss, self.train_accuracy = classification_loss(logit=self.train_logits, label=self.train_labels)
         self.test_loss, self.test_accuracy = classification_loss(logit=self.test_logits, label=self.test_labels)
+        
+        reg_loss = tf.losses.get_regularization_loss()
+        self.train_loss += reg_loss
+        self.test_loss += reg_loss
 
 
         """ Training """
